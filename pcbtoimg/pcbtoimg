@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ $# -ne 2 ] ; then
+  echo "Usage: pcbtoimg input output"
+  exit 1
+fi
+IN="$1"
+OUT="$2"
+
+if [ "${IN##*.}" = "brd" ] ; then
+  rm -f $OUT
+  eagle -C "display none 1 16 17 18 19 20 21 22 23 24 25 26 39 40 41 42 48 49 51 52; ratsnest; export image $OUT 300; quit;" "$IN"
+fi
+
+if [ "${IN##*.}" = "sch" ] ; then
+  rm -f $OUT
+  eagle -C "export image $OUT 150; quit;" "$IN"
+fi
