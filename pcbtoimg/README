@@ -1,1 +1,4 @@
 Simple script to convert CadSoft Eagle schemes and boards to images.
+
+Output is stored as a PNG file.
+
