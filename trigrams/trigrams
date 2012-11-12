@@ -1,0 +1,38 @@
+#!/usr/bin/python
+
+import sys
+
+if len(sys.argv) < 3:
+    print "Usage: trigrams prefix maxlen"
+    sys.exit(1)
+
+prefix = sys.argv[1].upper()
+
+if len(prefix) < 2:
+    print "Use prefix with at least 2 characters"
+    sys.exit(2)
+
+maxlen = int(sys.argv[2])
+
+t = {}
+
+with open('trigrams.txt') as f:
+    for l in f.readlines():
+        if l.startswith(';') or l.startswith('#'):
+            continue
+        k,v = l[0]+l[1], l[2]
+        if not k in t:
+            t[k] = []
+        t[k].append(v)
+
+def tree(p):
+    if p[-2:] not in t or len(p) >= maxlen:
+        print p
+        return
+    for s in t[p[-2:]]:
+        if s == '#':
+            print p
+        else:
+            tree(p+s)
+
+tree(prefix)
