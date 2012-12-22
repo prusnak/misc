@@ -1,0 +1,54 @@
+<html>
+<head>
+<title>imgcount</title>
+<style type="text/css">
+</style>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.url.js"></script>
+<script type="text/javascript">
+var dir, num, cur = -1, intid;
+
+var setimg = function(str) {
+  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&callback=?&q=' + str, function(data) {
+  var url = data.responseData.results[3].url;
+  $('img').attr('src', url);
+  });
+}
+
+var update = function() {
+  if (dir == "down") {
+    if (cur == -1) cur = num;
+    if (cur == 0) {
+      window.clearInterval(intid);
+    }
+    setimg(cur);
+    cur--;
+  }
+  if (dir == "up") {
+    if (cur == -1) cur = 0;
+    if (cur == num) {
+      window.clearInterval(intid);
+    }
+    setimg(cur);
+    cur++;
+  }
+}
+
+$(function(){
+  dir = $.url.param('dir');
+  num = $.url.param('num');
+  if (!dir || !num) {
+    $('#main').html('<form action=""><input name="num" /><select name="dir"><option value="down">down</option><option value="up">up</option></select><input type="submit"></form>');
+  } else {
+    intid = window.setInterval(update, 1000);
+  }
+});
+</script>
+</head>
+
+<body>
+
+<div id="main"><img /></div>
+
+</body>
+</html>
