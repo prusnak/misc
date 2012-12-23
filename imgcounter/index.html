@@ -2,6 +2,11 @@
 <head>
 <title>imgcount</title>
 <style type="text/css">
+img {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="jquery.url.js"></script>
@@ -9,8 +14,8 @@
 var dir, num, cur = -1, intid;
 
 var setimg = function(str) {
-  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&callback=?&q=' + str, function(data) {
-  var url = data.responseData.results[3].url;
+  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgc=color&imgsz=medium&callback=?&q=' + str, function(data) {
+  var url = data.responseData.results[0].url;
   $('img').attr('src', url);
   });
 }
