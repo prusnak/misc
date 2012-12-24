@@ -3,7 +3,8 @@
 <title>imgcount</title>
 <style type="text/css">
 img {
-  width: 800px;
+  max-width: 700px;
+  max-height: 700px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -12,28 +13,48 @@ img {
 <script type="text/javascript" src="jquery.url.js"></script>
 <script type="text/javascript">
 var dir, num, cur = -1, intid;
+var buf = {};
 
-var setimg = function(str) {
-  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgc=color&imgsz=medium&callback=?&q=' + str, function(data) {
-  var url = data.responseData.results[0].url;
-  $('img').attr('src', url);
+var loadimg = function(idx) {
+  if (idx < 0) return;
+  console.debug("loadimg", idx);
+  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgc=color&imgsz=medium&callback=?&q=number%20' + idx, function(data) {
+    console.debug(data.responseData);
+    var url = data.responseData.results[0].url;
+    $('<img/>')[0].src = url;
+    buf[idx] = url;
   });
+}
+
+var setimg = function(idx) {
+  console.debug("setimg", idx);
+  $('img').attr('src', buf[idx]);
 }
 
 var update = function() {
   if (dir == "down") {
-    if (cur == -1) cur = num;
+    if (cur == -1) {
+      cur = num;
+      loadimg(cur);
+      loadimg(cur-1);
+    }
     if (cur == 0) {
       window.clearInterval(intid);
     }
+    loadimg(cur-2);
     setimg(cur);
     cur--;
   }
   if (dir == "up") {
-    if (cur == -1) cur = 0;
+    if (cur == -1) {
+      cur = 0;
+      loadimg(cur);
+      loadimg(cur+1);
+    }
     if (cur == num) {
       window.clearInterval(intid);
     }
+    loadimg(cur+2);
     setimg(cur);
     cur++;
   }
@@ -41,7 +62,7 @@ var update = function() {
 
 $(function(){
   dir = $.url.param('dir');
-  num = $.url.param('num');
+  num = parseInt($.url.param('num'));
   if (!dir || !num) {
     $('#main').html('<form action=""><input name="num" /><select name="dir"><option value="down">down</option><option value="up">up</option></select><input type="submit"></form>');
   } else {
