@@ -25,7 +25,7 @@ var buf = {};
 
 var loadimg = function(idx) {
   if (idx < 0) return;
-  console.debug("loadimg", idx);
+  if (idx < 10) idx = '00' + idx;
   $.getJSON('http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49f95216302b6abb8fef8968d68853be&format=json&sort=relevance&tags=number,' + idx + '&tag_mode=all&jsoncallback=?', function(data) {
     var photo = data.photos.photo[0];
     var url = 'http://farm' + photo.farm + '.staticflickr.com/' + photo.server + '/' + photo.id +'_' + photo.secret + '_z.jpg';
@@ -35,7 +35,7 @@ var loadimg = function(idx) {
 }
 
 var setimg = function(idx) {
-  console.debug("setimg", idx);
+  if (idx < 10) idx = '00' + idx;
   $('img').attr('src', buf[idx]);
 }
 
