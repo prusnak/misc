@@ -70,7 +70,7 @@ $(function(){
   dir = $.url.param('dir');
   num = parseInt($.url.param('num'));
   if (!dir || !num) {
-    $('#main').html('<form action=""><input name="num" /><select name="dir"><option value="down">down</option><option value="up">up</option></select><input type="submit"></form>');
+    $('#main').html('<form action="">enter number: <input name="num" /><select name="dir"><option value="down">count-down</option><option value="up">count-up</option></select><input value="start!" type="submit"></form>');
   } else {
     intid = window.setInterval(update, 1000);
   }
