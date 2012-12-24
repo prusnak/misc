@@ -18,9 +18,9 @@ var buf = {};
 var loadimg = function(idx) {
   if (idx < 0) return;
   console.debug("loadimg", idx);
-  $.getJSON('https://ajax.googleapis.com/ajax/services/search/images?v=1.0&imgc=color&imgsz=medium&callback=?&q=number%20' + idx, function(data) {
-    console.debug(data.responseData);
-    var url = data.responseData.results[0].url;
+  $.getJSON('http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49f95216302b6abb8fef8968d68853be&format=json&sort=relevance&tags=number,' + idx + '&tag_mode=all&jsoncallback=?', function(data) {
+    var photo = data.photos.photo[0];
+    var url = 'http://farm' + photo.farm + '.staticflickr.com/' + photo.server + '/' + photo.id +'_' + photo.secret + '_z.jpg';
     $('<img/>')[0].src = url;
     buf[idx] = url;
   });
@@ -37,11 +37,14 @@ var update = function() {
       cur = num;
       loadimg(cur);
       loadimg(cur-1);
+      loadimg(cur-2);
+      loadimg(cur-3);
+      loadimg(cur-4);
     }
     if (cur == 0) {
       window.clearInterval(intid);
     }
-    loadimg(cur-2);
+    loadimg(cur-5);
     setimg(cur);
     cur--;
   }
@@ -50,11 +53,14 @@ var update = function() {
       cur = 0;
       loadimg(cur);
       loadimg(cur+1);
+      loadimg(cur+2);
+      loadimg(cur+3);
+      loadimg(cur+4);
     }
     if (cur == num) {
       window.clearInterval(intid);
     }
-    loadimg(cur+2);
+    loadimg(cur+5);
     setimg(cur);
     cur++;
   }
