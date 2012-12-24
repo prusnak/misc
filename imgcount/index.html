@@ -14,7 +14,7 @@ body {
   margin-top: 60px;
 }
 form {
-  margin-top: 240px;
+  margin-top: 300px;
 }
 </style>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
@@ -25,8 +25,8 @@ var buf = {};
 
 var loadimg = function(idx) {
   if (idx < 0) return;
-  if (idx < 10) idx = '00' + idx;
-  $.getJSON('http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49f95216302b6abb8fef8968d68853be&format=json&sort=relevance&tags=number,' + idx + '&tag_mode=all&jsoncallback=?', function(data) {
+  if (idx == 0) idx = 'zero';
+  $.getJSON('http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49f95216302b6abb8fef8968d68853be&format=json&group_id=52103131@N00&tags=' + idx + '&jsoncallback=?', function(data) {
     var photo = data.photos.photo[0];
     var url = 'http://farm' + photo.farm + '.staticflickr.com/' + photo.server + '/' + photo.id +'_' + photo.secret + '_z.jpg';
     $('<img/>')[0].src = url;
@@ -35,11 +35,12 @@ var loadimg = function(idx) {
 }
 
 var setimg = function(idx) {
-  if (idx < 10) idx = '00' + idx;
+  if (idx == 0) idx = 'zero';
   $('img').attr('src', buf[idx]);
 }
 
 var update = function() {
+  if (num > 500) num = 500;
   if (dir == "down") {
     if (cur == -1) {
       cur = num;
