@@ -24,7 +24,8 @@ var loadimg = function(idx) {
   if (idx < 0) return;
   if (idx == 0) idx = 'zero';
   $.getJSON('http://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=49f95216302b6abb8fef8968d68853be&format=json&group_id=52103131@N00&tags=' + idx + '&jsoncallback=?', function(data) {
-    var photo = data.photos.photo[0];
+    var photos = data.photos.photo;
+    var photo = photos[Math.floor(Math.random()*photos.length)];
     var url = 'http://farm' + photo.farm + '.staticflickr.com/' + photo.server + '/' + photo.id +'_' + photo.secret + '_z.jpg';
     $('<img/>')[0].src = url;
     buf[idx] = url;
