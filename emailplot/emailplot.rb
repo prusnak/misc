@@ -2,7 +2,7 @@
 require 'date'
 require 'cairo'
 
-colors = [:red, :green, :blue, :cyan, :magenta, :yellow]
+colors = [:red, :blue, :green, :cyan, :magenta, :yellow]
 data = []
 
 if ARGV.count < 1
@@ -15,7 +15,7 @@ max_year = DateTime.now.year + 1
 
 coloridx = 0
 ARGV.each { |fn|
-  File.open(fn).each { |line|
+  File.open(fn, 'r:ISO-8859-1').each { |line|
     next if not line =~ /^Date: /
     dt = DateTime.parse(line[6..-1])
     x = dt.year*1.0 + ( Date.leap?(dt.year) ? (dt.yday-1)/366.0 : (dt.yday-1)/365.0 )
