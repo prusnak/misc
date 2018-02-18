@@ -17,7 +17,11 @@ coloridx = 0
 ARGV.each { |fn|
   File.open(fn, 'r:ISO-8859-1').each { |line|
     next if not line =~ /^Date: /
-    dt = DateTime.parse(line[6..-1])
+    begin
+      dt = DateTime.parse(line[6..-1])
+    rescue
+      next
+    end
     x = dt.year*1.0 + ( Date.leap?(dt.year) ? (dt.yday-1)/366.0 : (dt.yday-1)/365.0 )
     min_year = dt.year if dt.year < min_year
     y = (dt.hour*3600.0 + dt.min*60.0 + dt.sec) / 86400.0
